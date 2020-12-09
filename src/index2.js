@@ -1,13 +1,6 @@
 import * as THREE from 'three'
-// import { WEBGL } from './webgl'
-// import fragment from "raw-loader!glslify-loader!./shaders/fragment.glsl";
-// import vertex from "raw-loader!glslify-loader!./shaders/vertex.glsl";
 import fragment from "./shaders/fragment.glsl";
 import vertex from "./shaders/vertex.glsl";
-
-// import './modal'
-
-
 
   var camera, scene, renderer
   var plane,material
@@ -49,7 +42,7 @@ import vertex from "./shaders/vertex.glsl";
 
     // cubes
 
-    cubeGeo = new THREE.BoxBufferGeometry(50, 50, 50)
+    cubeGeo = new THREE.BoxBufferGeometry(500, 50, 50)
     cubeMaterial = new THREE.MeshLambertMaterial({
       color: 0xfeb74c,
       map: new THREE.TextureLoader().load('static/textures/square.png'),
