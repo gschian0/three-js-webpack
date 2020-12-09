@@ -17,4 +17,14 @@ module.exports = {
     port: 9000,
     hot: true,
   },
+  module: {
+    rules: [{
+      test: /\.(glsl|frag|vert)$/,
+      exclude: [/node_modules/],
+      use: [
+        'raw-loader',
+        path.resolve('/node_modules/glslify-loader/glslify-loader.js')
+      ]
+    }]
+  },
 }

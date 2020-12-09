@@ -1,10 +1,16 @@
 import * as THREE from 'three'
 import { WEBGL } from './webgl'
-import './modal'
+// import fragment from "raw-loader!glslify-loader!./shaders/fragment.glsl";
+// import vertex from "raw-loader!glslify-loader!./shaders/vertex.glsl";
+import fragment from "./shaders/fragment.glsl";
+import vertex from "./shaders/vertex.glsl";
 
-if (WEBGL.isWebGLAvailable()) {
+// import './modal'
+
+
+
   var camera, scene, renderer
-  var plane
+  var plane,material
   var mouse,
     raycaster,
     isShiftDown = false
@@ -56,6 +62,28 @@ if (WEBGL.isWebGLAvailable()) {
 
     //
 
+    //tests
+
+    material = new THREE.ShaderMaterial({
+      extensions: {
+        derivatives: "#extension GL_OES_standard_derivatives : enable"
+      },
+      side: THREE.DoubleSide,
+      uniforms: {
+        time: { type: "f", value: 0 },
+        resolution: { type: "v4", value: new THREE.Vector4() },
+        uvRate1: {
+          value: new THREE.Vector2(1, 1)
+        },
+        progress: {value:1}
+      },
+      // wireframe: true,
+      // transparent: true,
+      vertexShader: vertex,
+      fragmentShader: fragment
+    });
+
+    //
     raycaster = new THREE.Raycaster()
     mouse = new THREE.Vector2()
 
@@ -153,7 +181,7 @@ if (WEBGL.isWebGLAvailable()) {
 
         // create cube
       } else {
-        var voxel = new THREE.Mesh(cubeGeo, cubeMaterial)
+        var voxel = new THREE.Mesh(cubeGeo, material)
         voxel.position.copy(intersect.point).add(intersect.face.normal)
         voxel.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25)
         scene.add(voxel)
@@ -184,7 +212,4 @@ if (WEBGL.isWebGLAvailable()) {
   function render() {
     renderer.render(scene, camera)
   }
-} else {
-  var warning = WEBGL.getWebGLErrorMessage()
-  document.body.appendChild(warning)
-}
+
